@@ -1,0 +1,28 @@
+# --- Directorios de compilación e IDE ---
+.idea/
+target/
+project/project/
+project/target/
+bin/
+out/
+
+# --- Archivos de sistema ---
+.DS_Store
+Thumbs.db
+ehthumbs.db
+
+# --- Archivos específicos de Scala/SBT ---
+*.class
+*.log
+*.jar
+*.swp
+*~
+.cache/
+.history/
+.scala_dependencies
+.worksheet/
+
+# --- Configuraciones locales (Nunca subas esto) ---
+# Si tuvieras un archivo con contraseñas o rutas personales, ponlo aquí:
+secrets.conf
+*.local

@@ -1,16 +1,11 @@
 package com.sensores.main
 
-import org.apache.spark.sql.SparkSession
+import com.sensores.main.util.SharedSparkSession
 import org.apache.spark.sql.types._
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
-class BronzeIngestSpec extends AnyFlatSpec with Matchers {
-
-  val spark = SparkSession.builder()
-    .master("local[*]")
-    .appName("BronzeTest")
-    .getOrCreate()
+class BronzeIngestSpec extends AnyFlatSpec with SharedSparkSession with Matchers {
 
   "El proceso de ingesta Bronze" should "mapear correctamente el JSON a un esquema definido" in {
     import spark.implicits._

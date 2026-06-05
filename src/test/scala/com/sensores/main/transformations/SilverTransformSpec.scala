@@ -2,15 +2,10 @@ package com.sensores.main.transformations
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions.col
+import com.sensores.main.util.SharedSparkSession
 
-class SilverTransformSpec extends AnyFlatSpec with Matchers {
-
-  val spark = SparkSession.builder()
-    .master("local[*]")
-    .appName("SilverTest")
-    .getOrCreate()
+class SilverTransformSpec extends AnyFlatSpec with SharedSparkSession with Matchers {
 
   import spark.implicits._
 

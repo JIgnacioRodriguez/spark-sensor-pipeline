@@ -2,16 +2,10 @@ package com.sensores.main.transformations
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions.col
+import com.sensores.main.util.SharedSparkSession
 
-class HighTemperatureFilterSpec extends AnyFlatSpec with Matchers {
-
-  // Creamos una sesión de Spark local solo para los tests
-  val spark = SparkSession.builder()
-    .master("local[*]")
-    .appName("TestApp")
-    .getOrCreate()
+class HighTemperatureFilterSpec extends AnyFlatSpec with SharedSparkSession with Matchers {
 
   import spark.implicits._
 

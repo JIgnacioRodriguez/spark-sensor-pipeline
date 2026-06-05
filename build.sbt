@@ -1,5 +1,5 @@
 name := "ProcesamientoBigData"
-version := "1.0"
+version := "1.1.0"
 scalaVersion := "2.12.18"
 
 assembly / assemblyMergeStrategy := {
@@ -20,4 +20,14 @@ libraryDependencies ++= Seq(
 )
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.17" % Test
 
+Test / javaOptions ++= Seq(
+  "--add-exports=java.base/sun.nio.ch=ALL-UNNAMED",
+  "--add-opens=java.base/java.nio=ALL-UNNAMED",
+  "--add-opens=java.base/sun.nio.ch=ALL-UNNAMED",
+  "--add-opens=java.base/sun.lang=ALL-UNNAMED",
+  "--add-opens=java.base/java.lang=ALL-UNNAMED",
+  "-Xmx2G"
+)
+
 Compile / run / fork := true
+Test / fork := true

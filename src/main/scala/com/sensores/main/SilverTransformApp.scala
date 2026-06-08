@@ -31,12 +31,15 @@ object SilverTransformApp{
       new FormatColumnTransformer("TEMPERATURA")
     )
 
-    // Aplicación del pipeline
-    val processedDF = transformations.foldLeft(bronzeDF) { (df, transformer) =>
-      transformer.transform(df)
+    // Aplicación del pipeline profesional
+    val processedDFResult: Either[Throwable, DataFrame] = transformations.foldLeft[Either[Throwable, DataFrame]](Right(bronzeDF)) { (accumulator, transformer) =>
+      accumulator.flatMap(df => transformer.transform(df))
     }
 
-    val query = processedDF
+    // Ahora extraemos el resultado final
+    val finalDF = processedDFResult.getOrElse(throw new RuntimeException("Error en transformaciones"))
+
+    val query = finalDF
       .writeStream
       .trigger(org.apache.spark.sql.streaming.Trigger.ProcessingTime("10 seconds")) // Agrupa datos cada 10s
       .foreachBatch { (batchDF: DataFrame, batchId: Long) =>

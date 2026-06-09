@@ -46,21 +46,36 @@ object SilverTransformApp{
 
         // Si el batch está vacío, no hagas nada
         if (!batchDF.isEmpty) {
-          batchDF.persist()
+          // 1. IMPORTANTE: Quedarse solo con el último registro por ID dentro del batch
+          import org.apache.spark.sql.expressions.Window
+          import org.apache.spark.sql.functions._
 
-          val exists = io.delta.tables.DeltaTable.isDeltaTable(spark, silver_path)
+          val windowSpec = Window.partitionBy("id").orderBy(col("timestamp").desc)
 
-          if (!exists) {
-            batchDF.write.format("delta").mode("overwrite").save(silver_path)
-          } else {
-            val targetTable = DeltaTable.forPath(spark, silver_path)
-            targetTable.as("oldData")
-              .merge(batchDF.as("newData"), "oldData.id = newData.id")
-              .whenMatched().updateAll()
-              .whenNotMatched().insertAll()
-              .execute()
+          val uniqueBatchDF = batchDF
+            .withColumn("row_number", row_number().over(windowSpec))
+            .filter(col("row_number") === 1)
+            .drop("row_number")
+
+          // 2. Ahora sí, hacemos el merge con el dataframe limpio
+          uniqueBatchDF.persist()
+          try {
+            val exists = io.delta.tables.DeltaTable.isDeltaTable(spark, silver_path)
+
+            if (!exists) {
+              uniqueBatchDF.write.format("delta").mode("overwrite").save(silver_path)
+            } else {
+              val targetTable = DeltaTable.forPath(spark, silver_path)
+              targetTable.as("oldData")
+                .merge(uniqueBatchDF.as("newData"), "oldData.id = newData.id")
+                .whenMatched().updateAll()
+                .whenNotMatched().insertAll()
+                .execute()
+            }
           }
-          batchDF.unpersist()
+          finally {
+            uniqueBatchDF.unpersist()
+          }
         }
         ()
       }

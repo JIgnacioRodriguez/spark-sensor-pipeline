@@ -16,6 +16,17 @@ object BronzeIngestApp{
     val bronzePath = config.getString("spark.bronze.path")
     val hadoopHomeDir = config.getString("hadoop.home.dir")
 
+    import org.apache.kafka.clients.admin.AdminClient
+    import java.util.Properties
+
+    val props = new Properties()
+    props.put("bootstrap.servers", kafkaServers)
+    val adminClient = AdminClient.create(props)
+    val descriptions = adminClient.describeTopics(java.util.Collections.singleton("sensores-data")).all().get()
+    val partitions = descriptions.get("sensores-data").partitions().size()
+
+    logger.debug(s"DEBUG: El tópico de Kafka tiene $partitions particiones reales.")
+
     // Asegúrate de que esta ruta coincida con donde pusiste el bin\winutils.exe
     System.setProperty("hadoop.home.dir", hadoopHomeDir)
 

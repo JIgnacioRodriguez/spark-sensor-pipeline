@@ -13,7 +13,7 @@ object InspectDataApp {
     System.setProperty("hadoop.home.dir", hadoopHomeDir)
     val spark = SparkProvider.getSession("ParquetReader")
 
-    val dfLectura = spark.read.format("delta").load(config.getString("spark.silver.path"))
-    dfLectura.orderBy(col("id")).show()
+    val dfLectura = spark.read.format("delta").load(config.getString("spark.gold.path"))
+    dfLectura.orderBy(col("window")).show()
   }
 }

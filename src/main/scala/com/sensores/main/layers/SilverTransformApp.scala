@@ -1,4 +1,4 @@
-package com.sensores.main
+package com.sensores.main.layers
 
 import com.sensores.main.transformations.{FormatColumnTransformer, HighTemperatureFilter, Transformer}
 import com.sensores.main.util.SparkProvider
@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory
 
 
 object SilverTransformApp{
-  def main(args: Array[String]): Unit = {
+  def run(): Unit = {
     val logger = LoggerFactory.getLogger(getClass)
     val config = ConfigFactory.load()
     val kafkaServers = config.getString("kafka.bootstrap.servers")

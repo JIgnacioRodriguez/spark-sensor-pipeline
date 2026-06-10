@@ -22,7 +22,11 @@ ehthumbs.db
 .scala_dependencies
 .worksheet/
 
-# --- Configuraciones locales (Nunca subas esto) ---
+# --- Configuraciones locales ---
 # Si tuvieras un archivo con contraseñas o rutas personales, ponlo aquí:
 secrets.conf
 *.local
+/checkpoints
+/data
+/target
+.env

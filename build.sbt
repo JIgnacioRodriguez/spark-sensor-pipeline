@@ -1,5 +1,5 @@
 name := "ProcesamientoBigData"
-version := "1.1.2"
+version := "1.1.3"
 scalaVersion := "2.12.18"
 
 assembly / assemblyMergeStrategy := {
@@ -28,6 +28,8 @@ Test / javaOptions ++= Seq(
   "--add-opens=java.base/java.lang=ALL-UNNAMED",
   "-Xmx2G"
 )
+
+assembly / mainClass := Some("com.sensores.main.Main")
 
 Compile / run / fork := true
 Test / fork := true

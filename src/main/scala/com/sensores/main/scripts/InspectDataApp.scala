@@ -6,7 +6,7 @@ import org.apache.spark.sql.functions.col
 
 
 object InspectDataApp {
-  def main(args: Array[String]): Unit = {
+  def run(args: Array[String]): Unit = {
     val config = ConfigFactory.load()
     val hadoopHomeDir = config.getString("hadoop.home.dir")
 

@@ -1,14 +1,14 @@
-package com.sensores.main
+package com.sensores.main.layers
 
+import com.sensores.main.util.SparkProvider
+import com.typesafe.config.ConfigFactory
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.types._
-import com.typesafe.config.ConfigFactory
 import org.slf4j.LoggerFactory
-import com.sensores.main.util.SparkProvider
 
 
 object BronzeIngestApp{
-  def main(args: Array[String]): Unit = {
+  def run(): Unit = {
     val logger = LoggerFactory.getLogger(getClass)
     val config = ConfigFactory.load()
     val kafkaServers = config.getString("kafka.bootstrap.servers")
@@ -17,6 +17,7 @@ object BronzeIngestApp{
     val hadoopHomeDir = config.getString("hadoop.home.dir")
 
     import org.apache.kafka.clients.admin.AdminClient
+
     import java.util.Properties
 
     val props = new Properties()
